@@ -492,7 +492,10 @@ Built on: [Biome](https://biomejs.dev/), [oxlint](https://oxc.rs/), [knip](https
 ## Contributors
 
 <!-- CONTRIBUTORS-START -->
+- [@Copilot](https://github.com/Copilot)
 - [@heavykenny](https://github.com/heavykenny)
+- [@mirkosalvato1-ctrl](https://github.com/mirkosalvato1-ctrl)
+- [@mtschoen](https://github.com/mtschoen)
 - [@myke-awoniran](https://github.com/myke-awoniran)
 - [@yashrajoria](https://github.com/yashrajoria)
 <!-- CONTRIBUTORS-END -->
