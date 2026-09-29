@@ -47,10 +47,7 @@ const toolNameFromContent = (content: unknown): string | null => {
 const messageFrom = (event: JsonObject): JsonObject | null =>
 	isObject(event.message) ? event.message : isObject(event.item) ? event.item : null;
 
-// Pi's JSON event stream (pi --mode json) tags tool activity with a nested
-// `assistantMessageEvent.toolName` on toolcall events (delivered inside
-// `message_update`), separate from the message-content shape the generic
-// branches below handle.
+// pi nests toolcall events under `message_update.assistantMessageEvent`.
 const piToolNameFrom = (event: JsonObject): string | null => {
 	if (!isObject(event.assistantMessageEvent)) return null;
 	const innerType = asString(event.assistantMessageEvent.type);
@@ -58,8 +55,7 @@ const piToolNameFrom = (event: JsonObject): string | null => {
 	return asString(event.assistantMessageEvent.toolName);
 };
 
-// Pi reports tool execution directly as `{ type: "tool_execution_start",
-// toolName: ... }` events alongside the streaming message events.
+// pi also reports `tool_execution_start` / `tool_execution_end` events.
 const piToolExecutionFrom = (event: JsonObject): string | null =>
 	asString(event.type)?.startsWith("tool_execution") ? asString(event.toolName) : null;
 
@@ -88,8 +84,7 @@ export const formatProviderOutputLine = (line: string): string | null => {
 	if (toolName && (type === "tool_execution_start" || type === "message_update")) {
 		return compact(`tool: ${toolName}`);
 	}
-	// Pi streams text deltas on `message_update`; the authoritative text is
-	// rendered once from `message_end`, so other updates stay silent.
+	// pi's final text arrives on `message_end`; `message_update` deltas are skipped.
 	if (type === "message_update") return null;
 	if (type === "tool_execution_end") {
 		const failed = event.isError === true;

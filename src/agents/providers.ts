@@ -60,8 +60,7 @@ export const PROVIDERS: AgentProvider[] = [
 		id: "pi",
 		label: "Pi",
 		bin: "pi",
-		// pi has no non-interactive `auth status` probe (auth is `pi /login` or
-		// an API key env var), so auth stays unknown and is treated as OK.
+		// pi has no non-interactive auth probe, so auth is treated as unknown.
 		loginCommand: { command: "pi", args: ["/login"] },
 		loginHint: "Run `pi` and use `/login`, or export a provider API key (e.g. ANTHROPIC_API_KEY).",
 		buildArgs: (prompt) => ["--mode", "json", "--no-session", "-p", prompt],
